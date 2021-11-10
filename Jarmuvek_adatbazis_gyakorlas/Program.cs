@@ -8,16 +8,19 @@ namespace Jarmuvek_adatbazis_gyakorlas
 {
     static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
+        static public Form1 form1 = null;
+        static public AdatKapcsolat adatKapcsolat = null;
+
+
         [STAThread]
         static void Main()
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            form1 = new Form1();
+            adatKapcsolat = new AdatKapcsolat();
+            Application.Run(form1);
         }
     }
 }

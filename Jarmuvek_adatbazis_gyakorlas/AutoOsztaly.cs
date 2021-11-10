@@ -29,7 +29,7 @@ namespace Jarmuvek_adatbazis_gyakorlas
 
         public override string ToString()
         {
-            return szin;
+            return szin + autoTipus + Marka + Km + Gyartasido;
         }
 
         internal static DialogResult ShowDialog()

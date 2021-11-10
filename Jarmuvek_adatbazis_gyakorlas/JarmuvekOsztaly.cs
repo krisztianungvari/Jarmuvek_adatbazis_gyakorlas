@@ -25,7 +25,7 @@ namespace Jarmuvek_adatbazis_gyakorlas
 
         public override string ToString()
         {
-            return marka;
+            return marka + km + gyartasido;
         }
     }
    

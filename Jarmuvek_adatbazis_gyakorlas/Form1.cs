@@ -14,28 +14,27 @@ namespace Jarmuvek_adatbazis_gyakorlas
     public partial class Form1 : Form
     {
         List<AutoOsztaly> auto;
+      
         public Form1()
         {
             InitializeComponent();
-            AdatKapcsolat.Csatlakozas();
-            AutokFrissitese();
 
-            
         }
 
         public void AutokFrissitese()
         {
-            auto = AdatKapcsolat.AutokkListazasa();
-            listBox_Autok.DataSource = null;
-            listBox_Autok.DataSource = auto;
+            Program.adatKapcsolat.AutokkListazasa();
+            // listBox_Autok.DataSource = null;
+          //  listBox_Autok.DataSource = auto;
         }
 
         private void button_UjAuto_Click(object sender, EventArgs e)
         {
-            AutoForm autoForm = new AutoForm();
+            AutoForm autoForm = new AutoForm("Új auto felvitele");
+            
             if (autoForm.ShowDialog() == DialogResult.OK)
             {
-                AdatKapcsolat.AutoFelvitel(autoForm.Auto);
+                Program.adatKapcsolat.AutoFelvitel(autoForm.Auto);
                 AutokFrissitese();
             }
         }
@@ -48,14 +47,16 @@ namespace Jarmuvek_adatbazis_gyakorlas
                 AutoForm autoForm = new AutoForm(auto);
                 if (autoForm.ShowDialog() == DialogResult.OK)
                 {
-                    AdatKapcsolat.AutoModositasa(auto);
+                    Program.adatKapcsolat.AutoModositasa(auto);
                     AutokFrissitese();
                 }
             }
             else
             {
                 MessageBox.Show("Jelöljön ki egy autót!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
             }
+
         }
 
         private void button_AutoTorles_Click(object sender, EventArgs e)
@@ -65,7 +66,7 @@ namespace Jarmuvek_adatbazis_gyakorlas
                 if (MessageBox.Show("Biztosan szeretné törölni ezt az autót?", "Törlés", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
                     AutoOsztaly auto = (AutoOsztaly)listBox_Autok.SelectedItem;
-                    AdatKapcsolat.AutoTorlese(auto);
+                    Program.adatKapcsolat.AutoTorlese(auto);
                     AutokFrissitese();
                 }
             }
@@ -96,6 +97,12 @@ namespace Jarmuvek_adatbazis_gyakorlas
             {
                 MessageBox.Show("Sikertelen mentés!", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Program.adatKapcsolat.Csatlakozas();
+            AutokFrissitese();
         }
     }
 }

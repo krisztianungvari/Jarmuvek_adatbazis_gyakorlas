@@ -152,13 +152,12 @@ namespace Jarmuvek_adatbazis_gyakorlas
             this.Controls.Add(this.listBox_Autok);
             this.Name = "Form1";
             this.Text = "JarmuvekForm";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox listBox_Autok;
         private System.Windows.Forms.ListBox listBox_Motorok;
         private System.Windows.Forms.Button button_UjAuto;
         private System.Windows.Forms.Button button_UjMotor;
@@ -168,6 +167,7 @@ namespace Jarmuvek_adatbazis_gyakorlas
         private System.Windows.Forms.Button button_MotorModositas;
         private System.Windows.Forms.Button button_MotorTorles;
         private System.Windows.Forms.Button button_MotorMentes;
+        public System.Windows.Forms.ListBox listBox_Autok;
     }
 }
 

@@ -12,13 +12,14 @@ namespace Jarmuvek_adatbazis_gyakorlas
 {
     public partial class AutoForm : Form
     {
-        private AutoOsztaly auto;
-        public AutoForm()
+        private AutoOsztaly auto = null;
+        public AutoForm(string Cim)
         {
             InitializeComponent();
+            this.Text = Cim;
             comboBox_AutoTipus.DataSource = Enum.GetValues(typeof(Autotipus));
         }
-        internal AutoForm(AutoOsztaly auto) : this()
+        internal AutoForm(AutoOsztaly auto) : this("Auto Módosítása")
         {
             this.auto = auto;
 
@@ -27,11 +28,7 @@ namespace Jarmuvek_adatbazis_gyakorlas
             dateTimePicker1.Value = auto.Gyartasido;
             textBox_AutoSzin.Text = auto.Szin;
             comboBox_AutoTipus.SelectedItem = auto.AutoTipus;
-            /*
-            dateTimePicker1.Enabled = false;
-            textBox_AutoMarka.Enabled = false;
-            comboBox_AutoTipus.Enabled = false;
-            */
+       
         }
 
         internal AutoOsztaly Auto { get; set; }
@@ -42,16 +39,19 @@ namespace Jarmuvek_adatbazis_gyakorlas
             {
                 if (auto == null) 
                 {
-                    auto = new AutoOsztaly(textBox_AutoMarka.Text, (int)numericUpDown_AutoKM.Value, dateTimePicker1.Value, textBox_AutoSzin.Text, (Autotipus)comboBox_AutoTipus.SelectedItem);             
+                    auto = new AutoOsztaly(textBox_AutoMarka.Text, (int)numericUpDown_AutoKM.Value, dateTimePicker1.Value, textBox_AutoSzin.Text, (Autotipus)comboBox_AutoTipus.SelectedItem);
+                    Program.adatKapcsolat.AutoFelvitel(auto);
+                    Program.adatKapcsolat.AutokkListazasa();
+                    this.Close();
+
                 }
-                else 
+                else //autó adatainak módosítása
                 {
                     auto.Marka = textBox_AutoMarka.Text;
-                    auto.Km = (int)numericUpDown_AutoKM.Value;
-                    auto.Gyartasido = dateTimePicker1.Value;
                     auto.Szin = textBox_AutoSzin.Text;
-                    //auto.AutoTipus = comboBox_AutoTipus.SelectedItem;
-                    //MessageBox.Show("Nincs minden mező kitöltve!", "Hiba!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Program.adatKapcsolat.AutoModositasa(auto);
+                    Program.adatKapcsolat.AutokkListazasa();
+                    this.Close();
                 }
 
             }
@@ -60,14 +60,14 @@ namespace Jarmuvek_adatbazis_gyakorlas
                 MessageBox.Show(ex.Message, "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 DialogResult = DialogResult.None;
             }
+          
+
+          
         }
 
         private void button_AutoMegse_Click(object sender, EventArgs e)
         {
-            
-            AutoForm autoForm = new AutoForm();
-            autoForm.Close();
-            
+            this.Close();        
         }
     }
     

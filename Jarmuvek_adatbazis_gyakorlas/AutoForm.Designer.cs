@@ -133,13 +133,20 @@ namespace Jarmuvek_adatbazis_gyakorlas
             // 
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTimePicker1.Location = new System.Drawing.Point(6, 139);
+            this.dateTimePicker1.MaxDate = new System.DateTime(2021, 11, 1, 0, 0, 0, 0);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(148, 23);
             this.dateTimePicker1.TabIndex = 4;
+            this.dateTimePicker1.Value = new System.DateTime(2021, 11, 1, 0, 0, 0, 0);
             // 
             // numericUpDown_AutoKM
             // 
             this.numericUpDown_AutoKM.Location = new System.Drawing.Point(7, 91);
+            this.numericUpDown_AutoKM.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.numericUpDown_AutoKM.Name = "numericUpDown_AutoKM";
             this.numericUpDown_AutoKM.Size = new System.Drawing.Size(147, 23);
             this.numericUpDown_AutoKM.TabIndex = 3;

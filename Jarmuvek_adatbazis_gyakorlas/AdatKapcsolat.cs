@@ -11,8 +11,8 @@ namespace Jarmuvek_adatbazis_gyakorlas
    
     class AdatKapcsolat
     {
-        static MySqlConnection connection;
-        static MySqlCommand command;
+         MySqlConnection connection;
+         MySqlCommand command;
 
         const string server = "localhost";
         const string user = "root";
@@ -20,7 +20,13 @@ namespace Jarmuvek_adatbazis_gyakorlas
         const string password = "";
         const string database = "jarmuvek";
         const MySqlSslMode sslMode = MySqlSslMode.None;
-        public static void Csatlakozas()
+
+        public AdatKapcsolat()
+        {
+            Csatlakozas();
+        }
+
+        public  void Csatlakozas()
         {
             MySqlConnectionStringBuilder stringBuilder = new MySqlConnectionStringBuilder();
 
@@ -41,12 +47,13 @@ namespace Jarmuvek_adatbazis_gyakorlas
                 command = new MySqlCommand();
                 command.Connection = connection;
             }
-            catch (Exception ex)
+            catch (MySqlException ex)
             {
                 MessageBox.Show("Hiba az adatbázis csatlakozás közben: ", ex.Message);
+                Environment.Exit(0);
             }
         }
-        public static void KapcsolatBontasa()
+        public  void KapcsolatBontasa()
         {
             try
             {
@@ -56,13 +63,15 @@ namespace Jarmuvek_adatbazis_gyakorlas
             catch (Exception ex)
             {
                 MessageBox.Show("Hiba az adatbázis kapcsolat bontása közben: ", ex.Message);
+                
             }
 
         }
-        public static List<AutoOsztaly> AutokkListazasa()
+        public  void AutokkListazasa()
         {
             try
             {
+                Program.form1.listBox_Autok.Items.Clear();
                 command.Parameters.Clear();
                 command.CommandText = "SELECT * FROM auto";
                 List<AutoOsztaly> autok = new List<AutoOsztaly>();
@@ -74,6 +83,8 @@ namespace Jarmuvek_adatbazis_gyakorlas
                     DateTime gyartasido = (DateTime)reader["Gyártási idő"];
                     string szin = reader["Szín"].ToString();
                     Autotipus tipus = (Autotipus)Enum.Parse(typeof(Autotipus), reader["Típus"].ToString());
+
+                    Program.form1.listBox_Autok.Items.Add(new AutoOsztaly(marka, km, gyartasido, szin, tipus));
 
                     /* 
                     autok.Add(new AutoOsztaly
@@ -87,7 +98,7 @@ namespace Jarmuvek_adatbazis_gyakorlas
 
                 }
                 reader.Close();
-                return autok;
+                
             }
             catch (Exception ex)
             {
@@ -96,7 +107,7 @@ namespace Jarmuvek_adatbazis_gyakorlas
             }
 
         }
-        public static void AutoFelvitel ( AutoOsztaly auto)
+        public  void AutoFelvitel ( AutoOsztaly auto)
         {
             try
             {
@@ -115,14 +126,14 @@ namespace Jarmuvek_adatbazis_gyakorlas
                 throw new Exception("Sikertelen feltöltés!", ex);
             }
         }
-        public static void AutoModositasa(AutoOsztaly auto)
+        public  void AutoModositasa(AutoOsztaly auto)
         {
 
             try
             {
 
                 command.Parameters.Clear();
-                command.CommandText = "UPDATE Auto SET szin = @szin WHERE marka = @marka";
+                command.CommandText = "UPDATE Auto SET `Szín` = @szin WHERE Márka = @marka";
                 command.Parameters.AddWithValue("@szin", auto.Szin);
                 command.Parameters.AddWithValue("@marka", auto.Marka);
 
@@ -130,7 +141,7 @@ namespace Jarmuvek_adatbazis_gyakorlas
                 command.ExecuteNonQuery();
 
                 command.Parameters.Clear();
-                command.CommandText = "UPDATE Auto SET autoTipus = @autoTipus WHERE marka = @marka";
+                command.CommandText = "UPDATE Auto SET `Típus` = @autoTipus WHERE Márka = @marka";
                 command.Parameters.AddWithValue("@autoTipus", auto.AutoTipus);
                 command.Parameters.AddWithValue("@marka", auto.Marka);
 
@@ -144,14 +155,14 @@ namespace Jarmuvek_adatbazis_gyakorlas
             }
         }
 
-        public static void AutoTorlese(AutoOsztaly auto)
+        public  void AutoTorlese(AutoOsztaly auto)
 
         {
             try
             {
 
                 command.Parameters.Clear();
-                command.CommandText = "DELETE FROM Auto WHERE marka = @marka";
+                command.CommandText = "DELETE FROM Auto WHERE Márka = @marka";
                 command.Parameters.AddWithValue("@marka", auto.Marka);
 
                 command.ExecuteNonQuery();
